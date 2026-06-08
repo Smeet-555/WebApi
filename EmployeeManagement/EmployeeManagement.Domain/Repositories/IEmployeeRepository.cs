@@ -1,0 +1,14 @@
+using EmployeeManagement.Domain.Entities;
+
+namespace EmployeeManagement.Domain.Repositories;
+
+public interface IEmployeeRepository
+{
+    Task<Employee?> GetByIdAsync(int id);
+    Task<IEnumerable<Employee>> GetAllAsync();
+    Task<bool> EmailExistsAsync(string email);
+    Task AddAsync(Employee employee);
+    Task UpdateAsync(Employee employee);
+    Task DeleteAsync(Employee employee);
+    Task SaveChangesAsync();
+}
