@@ -13,9 +13,11 @@ public static class DependencyInjection
         // Register application services
         services.AddScoped<IEmployeeService, EmployeeService>();
 
-        // Bind ExternalApiOptions from appsettings.json
-        services.Configure<ExternalApiOptions>(
-            configuration.GetSection(ExternalApiOptions.SectionName));
+        // Bind and validate ExternalApiOptions at startup
+        services.AddOptions<ExternalApiOptions>()
+            .Bind(configuration.GetSection(ExternalApiOptions.SectionName))
+            .ValidateDataAnnotations()        // fails fast if BaseUrl or ApiKey is missing
+            .ValidateOnStart();
 
         return services;
     }

@@ -1,3 +1,4 @@
+using EmployeeManagement.Api.Extensions;
 using EmployeeManagement.Api.Middleware;
 using EmployeeManagement.Application;
 using EmployeeManagement.Infrastructure;
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // ── Register services ──────────────────────────────────────
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerDocs();             // custom Swagger config
 
 // Application and Infrastructure layers
 builder.Services.AddApplication(builder.Configuration);
@@ -21,8 +22,7 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerDocs();                      // Swagger UI at https://localhost/
 }
 
 app.UseHttpsRedirection();

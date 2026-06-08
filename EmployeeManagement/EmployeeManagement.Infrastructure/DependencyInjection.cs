@@ -2,6 +2,7 @@ using EmployeeManagement.Application.Interfaces;
 using EmployeeManagement.Domain.Repositories;
 using EmployeeManagement.Infrastructure.Data;
 using EmployeeManagement.Infrastructure.ExternalApis;
+using EmployeeManagement.Infrastructure.Options;
 using EmployeeManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,14 +14,25 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // Register EF Core with SQL Server
+        // Bind and validate ConnectionStringOptions at startup
+        services.AddOptions<ConnectionStringOptions>()
+            .Bind(configuration.GetSection(ConnectionStringOptions.SectionName))
+            .ValidateDataAnnotations()        // fails fast if DefaultConnection is missing
+            .ValidateOnStart();
+
+        // Register EF Core — read connection string via options
+        var connectionString = configuration
+            .GetSection(ConnectionStringOptions.SectionName)
+            .Get<ConnectionStringOptions>()!
+            .DefaultConnection;
+
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(connectionString));
 
         // Register repository
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
-        // Register external user service with a named HttpClient
+        // Register external user service with typed HttpClient
         services.AddHttpClient<IExternalUserService, ExternalUserService>();
 
         return services;
