@@ -14,10 +14,6 @@ public class NotificationController : ControllerBase
     {
         _emailService = emailService;
     }
-
-    /// <summary>Send a test email.</summary>
-    /// <response code="200">Email sent successfully.</response>
-    /// <response code="500">Failed to send email.</response>
     [HttpPost("send")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
