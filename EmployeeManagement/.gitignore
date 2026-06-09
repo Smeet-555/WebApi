@@ -1,0 +1,80 @@
+# ──────────────────────────────────────────
+# .NET / C# Build Output
+# ──────────────────────────────────────────
+bin/
+obj/
+out/
+
+# ──────────────────────────────────────────
+# NuGet
+# ──────────────────────────────────────────
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+nuget.config
+
+# ──────────────────────────────────────────
+# Visual Studio / Rider / VS Code
+# ──────────────────────────────────────────
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# ──────────────────────────────────────────
+# Test Results & Coverage
+# ──────────────────────────────────────────
+TestResults/
+coverage/
+*.trx
+*.coveragexml
+*.coverage
+
+# ──────────────────────────────────────────
+# Publish Output
+# ──────────────────────────────────────────
+publish/
+**/publish/
+
+# ──────────────────────────────────────────
+# Entity Framework Core Migrations (optional)
+# Comment this out if you want to commit migrations
+# ──────────────────────────────────────────
+# **/Migrations/
+
+# ──────────────────────────────────────────
+# Log Files
+# ──────────────────────────────────────────
+logs/
+*.log
+*.txt.log
+
+# ──────────────────────────────────────────
+# Secrets & Environment Config
+# ──────────────────────────────────────────
+appsettings.Production.json
+appsettings.Staging.json
+secrets.json
+.env
+.env.*
+
+# ──────────────────────────────────────────
+# OS Generated
+# ──────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ──────────────────────────────────────────
+# Temporary Files
+# ──────────────────────────────────────────
+*.tmp
+*.temp
+*.bak
+*.swp
+~$*
