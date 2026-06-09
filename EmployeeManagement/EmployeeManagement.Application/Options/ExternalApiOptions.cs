@@ -1,13 +1,10 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace EmployeeManagement.Application.Options;
 
-// Bound from appsettings.json → "ExternalApi" section
+// Bound from appsettings.json section "ExternalApi"
 public class ExternalApiOptions
 {
     public const string SectionName = "ExternalApi";
 
-    [Required]
     public string BaseUrl { get; set; } = string.Empty;
 
     // Optional — not all external APIs require a key
