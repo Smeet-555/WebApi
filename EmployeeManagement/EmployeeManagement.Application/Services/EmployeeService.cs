@@ -10,10 +10,12 @@ namespace EmployeeManagement.Application.Services;
 public class EmployeeService : IEmployeeService
 {
     private readonly IEmployeeRepository _repository;
+    private readonly IJobEnqueuer _jobEnqueuer;
 
-    public EmployeeService(IEmployeeRepository repository)
+    public EmployeeService(IEmployeeRepository repository, IJobEnqueuer jobEnqueuer)
     {
         _repository = repository;
+        _jobEnqueuer = jobEnqueuer;
     }
 
     public async Task<Result<IEnumerable<EmployeeDto>>> GetAllAsync()
@@ -50,6 +52,9 @@ public class EmployeeService : IEmployeeService
 
         await _repository.AddAsync(employee);
         await _repository.SaveChangesAsync();
+
+        // Enqueue welcome email as a Hangfire fire-and-forget job
+        _jobEnqueuer.EnqueueWelcomeEmail(employee.Id);
 
         return Result<EmployeeDto>.Success(MapToDto(employee));
     }

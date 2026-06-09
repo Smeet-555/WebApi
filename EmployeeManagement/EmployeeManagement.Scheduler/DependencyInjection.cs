@@ -1,3 +1,4 @@
+using EmployeeManagement.Application.Interfaces;
 using EmployeeManagement.Scheduler.Jobs;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,8 +8,12 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddScheduler(this IServiceCollection services)
     {
-        // Register job so Hangfire can resolve it via DI
+
         services.AddScoped<EmployeeSyncJob>();
+        services.AddScoped<WelcomeEmailJob>();
+
+
+        services.AddScoped<IJobEnqueuer, HangfireJobEnqueuer>();
 
         return services;
     }
