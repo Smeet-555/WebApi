@@ -22,7 +22,7 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwaggerDocs();                      // Swagger UI at https://localhost/
+    app.UseSwaggerDocs();                   
 }
 
 app.UseHttpsRedirection();

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EmployeeManagement.Api</name>
+    </assembly>
+    <members>
+        <member name="M:EmployeeManagement.Api.Controllers.EmployeesController.GetAll">
+            <summary>Get all employees.</summary>
+            <response code="200">Returns the list of employees.</response>
+        </member>
+        <member name="M:EmployeeManagement.Api.Controllers.EmployeesController.GetById(System.Int32)">
+            <summary>Get a single employee by ID.</summary>
+            <response code="200">Returns the employee.</response>
+            <response code="404">Employee not found.</response>
+        </member>
+        <member name="M:EmployeeManagement.Api.Controllers.EmployeesController.Create(EmployeeManagement.Application.DTOs.CreateEmployeeDto)">
+            <summary>Create a new employee.</summary>
+            <response code="201">Employee created successfully.</response>
+            <response code="400">Email already exists or invalid data.</response>
+        </member>
+        <member name="M:EmployeeManagement.Api.Controllers.EmployeesController.Update(System.Int32,EmployeeManagement.Application.DTOs.UpdateEmployeeDto)">
+            <summary>Update an existing employee.</summary>
+            <response code="204">Employee updated successfully.</response>
+            <response code="404">Employee not found.</response>
+        </member>
+        <member name="M:EmployeeManagement.Api.Controllers.EmployeesController.Delete(System.Int32)">
+            <summary>Delete an employee.</summary>
+            <response code="204">Employee deleted successfully.</response>
+            <response code="404">Employee not found.</response>
+        </member>
+        <member name="M:EmployeeManagement.Api.Controllers.NotificationController.Send(EmployeeManagement.Api.Controllers.SendEmailRequest)">
+            <summary>Send a test email.</summary>
+            <response code="200">Email sent successfully.</response>
+            <response code="500">Failed to send email.</response>
+        </member>
+    </members>
+</doc>
