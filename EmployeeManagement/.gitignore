@@ -59,6 +59,7 @@ logs/
 # ──────────────────────────────────────────
 appsettings.Production.json
 appsettings.Staging.json
+appsettings.json
 secrets.json
 .env
 .env.*

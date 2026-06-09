@@ -10,6 +10,6 @@ public class ExternalApiOptions
     [Required]
     public string BaseUrl { get; set; } = string.Empty;
 
-    [Required]
+    // Optional — not all external APIs require a key
     public string ApiKey { get; set; } = string.Empty;
 }

@@ -4,7 +4,6 @@ using EmployeeManagement.Domain.Repositories;
 using EmployeeManagement.Infrastructure.Data;
 using EmployeeManagement.Infrastructure.ExternalApis;
 using EmployeeManagement.Infrastructure.Logging;
-using EmployeeManagement.Infrastructure.Options;
 using EmployeeManagement.Infrastructure.Repositories;
 using EmployeeManagement.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -21,24 +20,14 @@ public static class DependencyInjection
         services.AddInfrastructureLogging();
 
         // ── Options ───────────────────────────────────────
-        services.AddOptions<ConnectionStringOptions>()
-            .Bind(configuration.GetSection(ConnectionStringOptions.SectionName))
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
-
         services.AddOptions<SmtpOptions>()
             .Bind(configuration.GetSection(SmtpOptions.SectionName))
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
+            .ValidateDataAnnotations();
+            // Note: not using ValidateOnStart so missing SMTP config won't block startup
 
-        // ── Database ──────────────────────────────────────
-        var connectionString = configuration
-            .GetSection(ConnectionStringOptions.SectionName)
-            .Get<ConnectionStringOptions>()!
-            .DefaultConnection;
-
+        // ── Database — In-Memory (swap to UseSqlServer for production) ───
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(connectionString));
+            options.UseInMemoryDatabase("EmployeeManagementDb"));
 
         // ── Repositories ──────────────────────────────────
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();

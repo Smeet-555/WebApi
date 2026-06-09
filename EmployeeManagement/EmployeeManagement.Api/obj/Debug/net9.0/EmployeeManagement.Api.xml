@@ -28,10 +28,5 @@
             <response code="204">Employee deleted successfully.</response>
             <response code="404">Employee not found.</response>
         </member>
-        <member name="M:EmployeeManagement.Api.Controllers.NotificationController.Send(EmployeeManagement.Api.Controllers.SendEmailRequest)">
-            <summary>Send a test email.</summary>
-            <response code="200">Email sent successfully.</response>
-            <response code="500">Failed to send email.</response>
-        </member>
     </members>
 </doc>
