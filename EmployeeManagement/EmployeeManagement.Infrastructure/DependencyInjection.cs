@@ -5,8 +5,7 @@ using EmployeeManagement.Infrastructure.Data;
 using EmployeeManagement.Infrastructure.ExternalApis;
 using EmployeeManagement.Infrastructure.Logging;
 using EmployeeManagement.Infrastructure.Repositories;
-using EmployeeManagement.Infrastructure.Services;
-using Microsoft.EntityFrameworkCore;
+using EmployeeManagement.Infrastructure.Services;using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -37,6 +36,9 @@ public static class DependencyInjection
 
         // ── Email ─────────────────────────────────────────
         services.AddScoped<IEmailService, EmailService>();
+
+        // ── Excel Export ──────────────────────────────────────
+        services.AddScoped<IExcelExportService, EmployeeExcelExportService>();
 
         return services;
     }

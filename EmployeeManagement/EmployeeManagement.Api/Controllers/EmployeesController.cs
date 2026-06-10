@@ -10,14 +10,14 @@ namespace EmployeeManagement.Api.Controllers;
 public class EmployeesController : ControllerBase
 {
     private readonly IEmployeeService _employeeService;
+    private readonly IExcelExportService _excelExportService;
 
-    public EmployeesController(IEmployeeService employeeService)
+    public EmployeesController(IEmployeeService employeeService, IExcelExportService excelExportService)
     {
         _employeeService = employeeService;
+        _excelExportService = excelExportService;
     }
 
-    /// <summary>Get all employees.</summary>
-    /// <response code="200">Returns the list of employees.</response>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<EmployeeDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
@@ -26,9 +26,20 @@ public class EmployeesController : ControllerBase
         return Ok(result.Value);
     }
 
-    /// <summary>Get a single employee by ID.</summary>
-    /// <response code="200">Returns the employee.</response>
-    /// <response code="404">Employee not found.</response>
+  
+    [HttpGet("export")]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> Export()
+    {
+        var result = await _employeeService.GetAllAsync();
+        var bytes = _excelExportService.ExportEmployees(result.Value!);
+
+        var fileName = $"employees_{DateTime.UtcNow:yyyyMMdd_HHmmss}.xlsx";
+        return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+    }
+
+
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -42,9 +53,6 @@ public class EmployeesController : ControllerBase
         return Ok(result.Value);
     }
 
-    /// <summary>Create a new employee.</summary>
-    /// <response code="201">Employee created successfully.</response>
-    /// <response code="400">Email already exists or invalid data.</response>
     [HttpPost]
     [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,9 +66,6 @@ public class EmployeesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
     }
 
-    /// <summary>Update an existing employee.</summary>
-    /// <response code="204">Employee updated successfully.</response>
-    /// <response code="404">Employee not found.</response>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -74,9 +79,6 @@ public class EmployeesController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Delete an employee.</summary>
-    /// <response code="204">Employee deleted successfully.</response>
-    /// <response code="404">Employee not found.</response>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
