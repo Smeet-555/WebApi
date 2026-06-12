@@ -1,4 +1,5 @@
 using EmployeeManagement.Application.DTOs;
+using EmployeeManagement.Application.DTOs.Pagination;
 using EmployeeManagement.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,19 +17,18 @@ public class EmployeesController : ControllerBase
         _employeeService = employeeService;
     }
 
-    /// <summary>Get all employees.</summary>
-    /// <response code="200">Returns the list of employees.</response>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<EmployeeDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll()
-    {
-        var result = await _employeeService.GetAllAsync();
-        return Ok(result.Value);
-    }
+[HttpGet]
+    public async Task<IActionResult>GetAll([FromQuery] PaginationRequestDto request)
+        {
+            var result =
+                await _employeeService.GetPagedAsync(
+                    request);
 
-    /// <summary>Get a single employee by ID.</summary>
-    /// <response code="200">Returns the employee.</response>
-    /// <response code="404">Employee not found.</response>
+            return Ok(result.Value);
+        }
+
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -42,9 +42,7 @@ public class EmployeesController : ControllerBase
         return Ok(result.Value);
     }
 
-    /// <summary>Create a new employee.</summary>
-    /// <response code="201">Employee created successfully.</response>
-    /// <response code="400">Email already exists or invalid data.</response>
+
     [HttpPost]
     [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,9 +56,6 @@ public class EmployeesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
     }
 
-    /// <summary>Update an existing employee.</summary>
-    /// <response code="204">Employee updated successfully.</response>
-    /// <response code="404">Employee not found.</response>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -74,9 +69,6 @@ public class EmployeesController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Delete an employee.</summary>
-    /// <response code="204">Employee deleted successfully.</response>
-    /// <response code="404">Employee not found.</response>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
